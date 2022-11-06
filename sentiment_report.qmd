@@ -2,7 +2,7 @@
 title: "Presidential Sentiment of Inauguration Speeches"
 format:
   html:
-    toc: false
+    toc: true
     number-sections: true
     echo: false
     keep-hidden: true
@@ -13,14 +13,17 @@ format:
 This document analysis the sentiment of presential inauguration speeches.
 
 
-```{python}
+```{python .hidden}
 import pandas as pd
 import plotly.express as px
 ```
 
 
-```{python}
+```{python .hidden}
 df = pd.read_csv('data/df_concat.csv')
+
+df_grouped = df[['source', 'stars']].groupby(['source', 'stars']).size().to_frame('count').reset_index()
+
 ```
 
 
@@ -32,10 +35,11 @@ df = pd.read_csv('data/df_concat.csv')
 
 ### Trump
 
-This is the graph for Trump's speech sentiment.
+This is the polar graph for Trump's speech sentiment. The complete speech is represented by the complete circle.
 
-```{python}
-fig = px.bar_polar(df[df['source']=='Trump'], r="stars", theta="direction",
+```{python .hidden}
+president = 'Trump'
+fig = px.bar_polar(df[df['source']==president], r="stars", theta="direction",
                    color="stars", 
                    hover_name="text", 
                    color_discrete_sequence= px.colors.sequential.Plasma_r
@@ -43,16 +47,38 @@ fig = px.bar_polar(df[df['source']=='Trump'], r="stars", theta="direction",
 fig.show()
 ```
 
+The graph shows the count of the different sentiments.
+
+```{python .hidden}
+fig = px.bar(df_grouped[df_grouped['source']==president],
+             x="stars",  y="count", color="stars",
+                   color_discrete_sequence= px.colors.sequential.Plasma_r
+                   )   
+fig.show()
+```
+
+
 ### Biden
 
 This is the graph for Biden's speech sentiment.
 
-```{python}
-fig = px.bar_polar(df[df['source']=='Biden'], r="stars", theta="direction",
+```{python .hidden}
+president = 'Biden'
+fig = px.bar_polar(df[df['source']==president], r="stars", theta="direction",
                    color="stars", 
                    hover_name="text", 
                    color_discrete_sequence= px.colors.sequential.Plasma_r
                    )
+fig.show()
+```
+
+The graph shows the count of the different sentiments.
+
+```{python .hidden}
+fig = px.bar(df_grouped[df_grouped['source']==president],
+             x="stars",  y="count", color="stars",
+                   color_discrete_sequence= px.colors.sequential.Plasma_r
+                   )   
 fig.show()
 ```
 
@@ -67,8 +93,9 @@ fig.show()
 This is the graph for Trump's speech sentiment.
 
 ```{python}
-df_trump = df.loc[df['source']=='Trump', ['text', 'stars']].copy()
-list(zip(df_trump['text'], df_trump['stars']))
+president = 'Trump'
+df_filt = df.loc[df['source']==president, ['text', 'stars']].copy()
+list(zip(df_filt['text'], df_filt['stars']))
 ```
 
 
@@ -77,8 +104,9 @@ list(zip(df_trump['text'], df_trump['stars']))
 This is the graph for Biden's speech sentiment.
 
 ```{python}
-df_biden = df.loc[df['source']=='Biden', ['text', 'stars']]
-list(zip(df_biden['text'], df_biden['stars']))
+president = 'Biden'
+df_filt = df.loc[df['source']==president, ['text', 'stars']]
+list(zip(df_filt['text'], df_filt['stars']))
 ```
 
 :::

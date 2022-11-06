@@ -4,13 +4,9 @@ from transformers import pipeline
 import pandas as pd
 import re
 import numpy as np
-from plotnine import ggplot, aes, geom_line
-import seaborn as sns
-import matplotlib.pyplot as plt
-import plotly.express as px
 # %%
 # %% download and save pipeline and model
-# nlp_model = pipeline(model='nlptown/bert-base-multilingual-uncased-sentiment')
+nlp_model = pipeline(model='nlptown/bert-base-multilingual-uncased-sentiment')
 
 #  save the specific model
 # with open("models/sentiment_bert.pkl", "wb") as output_file:
@@ -86,4 +82,10 @@ df_trump = prepSpeech(file_path='data/Trump_2017.txt', president='Trump')
 df_combined = pd.concat([df_biden, df_trump])
 df_combined.to_csv("data/df_concat.csv", index=False)
 
+# %%
+df_combined = pd.read_csv("data/df_concat.csv")
+# %%
+df_grouped = df_combined[['source', 'stars']].groupby(['source', 'stars']).size().to_frame('size').reset_index()
+
+df_grouped
 # %%
