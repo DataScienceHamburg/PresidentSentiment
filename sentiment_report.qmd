@@ -1,0 +1,83 @@
+---
+title: "Presidential Sentiment of Inauguration Speeches"
+format:
+  html:
+    toc: false
+    number-sections: true
+    echo: false
+    keep-hidden: true
+    code-tools: true
+---
+
+This document analysis the sentiment of presential inauguration speeches.
+
+
+```{python}
+import pandas as pd
+import plotly.express as px
+```
+
+
+```{python}
+df = pd.read_csv('data/df_concat.csv')
+```
+
+
+# Results
+
+## Graphs
+
+::: {.panel-tabset}
+
+### Trump
+
+This is the graph for Trump's speech sentiment.
+
+```{python}
+fig = px.bar_polar(df[df['source']=='Trump'], r="stars", theta="direction",
+                   color="stars", 
+                   hover_name="text", 
+                   color_discrete_sequence= px.colors.sequential.Plasma_r
+                   )   
+fig.show()
+```
+
+### Biden
+
+This is the graph for Biden's speech sentiment.
+
+```{python}
+fig = px.bar_polar(df[df['source']=='Biden'], r="stars", theta="direction",
+                   color="stars", 
+                   hover_name="text", 
+                   color_discrete_sequence= px.colors.sequential.Plasma_r
+                   )
+fig.show()
+```
+
+:::
+
+## Text and Sentiment
+
+::: {.panel-tabset}
+
+### Trump
+
+This is the graph for Trump's speech sentiment.
+
+```{python}
+df_trump = df.loc[df['source']=='Trump', ['text', 'stars']].copy()
+list(zip(df_trump['text'], df_trump['stars']))
+```
+
+
+### Biden
+
+This is the graph for Biden's speech sentiment.
+
+```{python}
+df_biden = df.loc[df['source']=='Biden', ['text', 'stars']]
+list(zip(df_biden['text'], df_biden['stars']))
+```
+
+:::
