@@ -13,7 +13,7 @@ format:
 This document analysis the sentiment of presential inauguration speeches.
 
 
-```{python .hidden}
+```{python}
 import pandas as pd
 import plotly.express as px
 ```
